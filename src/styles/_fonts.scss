@@ -1,0 +1,33 @@
+//----Font face----//
+
+//---usage :
+
+    // @include font-face(fontName, fontPath, fontWeight, fontStyle, fontSources);
+
+//---exemple :
+
+    // // primary
+        // @include font-face("Akkurat", "~@fonts/subset-AkkuratPro-Regular", 400, normal, eot woff woff2 ttf);
+        // @include font-face("Akkurat", "~@fonts/subset-AkkuratPro-Bold", 800, normal, eot woff woff2 ttf);
+        // @include font-face("Akkurat", "~@fonts/subset-AkkuratPro-Light", 300, normal, eot woff woff2 ttf);
+
+    //--- import google font
+        // @import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900&display=swap');
+
+
+
+
+// Primary.
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900&display=swap');
+
+// Secondary.
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap');
+
+
+
+$font_primary: 'Playfair Display', serif;
+$font_secondary  : 'Open Sans', sans-serif;
+
+$regular: 400;
+$medium : 700;
+$bold   : 900;

@@ -1,0 +1,75 @@
+@import 'colors';
+@import 'fonts';
+
+
+.dev-borders {
+  * {
+    border        : 1px solid black;
+  }
+}
+
+* {
+  padding         : 0;
+  margin          : 0;
+  box-sizing      : border-box;
+}
+
+body {
+  color           : $white;
+  font-family     : $font_primary;
+  background      : $black;
+}
+
+section {
+  position        : relative;
+  display         : flex;
+  min-height      : 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  font-size     : 2.5rem;
+  margin-bottom : 1.5rem; 
+}
+
+p {
+  font-family   : $font_secondary;
+  line-height   : 1.6rem;
+}
+
+img {
+  display        : block;
+}
+
+.intro {
+  flex-direction    : column;
+}
+
+.works {
+  background      : #50d1c0;
+  flex-direction  : column;
+  justify-content: space-around;
+  padding         : 8rem 3rem;
+  //overflow        : hidden;
+
+  .job {
+    @extend section;
+    min-height        : 100%;
+    margin            : 50px;
+    opacity           : 0;
+  }
+
+  &__image {
+    margin-right  : -3rem; 
+  }
+  &__content {
+    z-index       : 3;
+    max-width     : 320px;
+  }
+}
+
+.exp {
+  flex-direction    : column;
+  background      : #c05439;
+}

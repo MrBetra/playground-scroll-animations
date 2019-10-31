@@ -1,6 +1,4 @@
-$body-color: slateblue;
-
-body {
-  color: $body-color;
-  font-family: sans-serif;
-}
+@import 'colors';
+@import 'font-face';
+@import 'fonts';
+@import 'global';
