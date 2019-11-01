@@ -42,24 +42,76 @@ img {
   display        : block;
 }
 
+a {
+  display: inline-block;
+  padding: 20px 30px;
+  color: $white;
+  font-size: .8rem;
+  font-family: $font_secondary;
+  font-weight: $bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid $primary;
+  border-radius: .4rem;
+  transition: background .2s ease-in-out;
+
+  &:hover {
+    background: $primary;
+  }
+}
+
 .intro {
   flex-direction    : column;
+
+  .animated_h2 {
+    span {
+      display: inline-block;
+    }
+
+    .lettre_space {
+      min-width: 11px;
+    }
+  }
+
+  &__scroll {
+    position: absolute;
+
+    bottom: 100px;
+  }
 }
 
 .works {
-  background      : #50d1c0;
+  background      : darken($primary, 25%);
   flex-direction  : column;
   justify-content: space-around;
   padding         : 8rem 3rem;
   //overflow        : hidden;
 
-  .job {
-    @extend section;
-    min-height        : 100%;
-    margin            : 50px;
-    opacity           : 0;
+  * {
+    z-index: 1;
   }
 
+  &:before {
+    display: block;
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 1px);
+    z-index: 0;
+
+    height: calc(100% + 50px);
+    width: 50%;
+    background-color: $primary;
+    //mix-blend-mode: unset;
+  }
+}
+
+.job {
+  @extend section;
+  min-height        : 100%;
+  margin            : 50px;
+  opacity           : 0;
+  
   &__image {
     margin-right  : -3rem; 
   }
@@ -71,5 +123,6 @@ img {
 
 .exp {
   flex-direction    : column;
-  background      : #c05439;
+  color             : $secondary; 
+  background        : $white;
 }
