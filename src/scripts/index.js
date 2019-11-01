@@ -51,8 +51,8 @@ function addTweenJob(job) {
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {
-        tl.to(job, .3, { x: '-20px', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut });
-        tl.to(job, .4, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
+        tl.to(job, .1, { x: '-20px', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut });
+        tl.to(job, .3, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
         //observer.disconnect();
       } else if (entry.intersectionRatio < .5) {
         tl.to(job, .3, { x: '20px', scale: 1, opacity: 1, skewX: '-1', skewY: '0', ease: Power1.easeOut });
@@ -69,7 +69,7 @@ function addTweenIntro(el, index) {
   console.log(el, index);
   let tl = new TimelineMax();
   tl.set(el, { opacity: 0 });
-  let delay = index < 1 ? 0 : (index / 15) - (index / 12);
+  let delay = index < 1 ? 0 : (index / 15) - (index / 13.5);
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {

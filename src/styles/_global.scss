@@ -42,7 +42,7 @@ img {
   display        : block;
 }
 
-a {
+.btn {
   display: inline-block;
   padding: 20px 30px;
   color: $white;
@@ -51,8 +51,8 @@ a {
   font-weight: $bold;
   text-decoration: none;
   text-transform: uppercase;
-  border: 1px solid $primary;
-  border-radius: .4rem;
+  //border: 2px solid $primary;
+  //border-radius: .4rem;
   transition: background .2s ease-in-out;
 
   &:hover {
@@ -75,8 +75,8 @@ a {
 
   &__scroll {
     position: absolute;
-
     bottom: 100px;
+    //transform: translateX(-120px);
   }
 }
 
@@ -96,10 +96,11 @@ a {
     content: '';
     position: absolute;
     top: -50px;
+    bottom: -150px;
     left: calc(50% - 1px);
-    z-index: 0;
+    z-index: 1;
 
-    height: calc(100% + 50px);
+    //height: calc(100% + 50px);
     width: 50%;
     background-color: $primary;
     //mix-blend-mode: unset;
