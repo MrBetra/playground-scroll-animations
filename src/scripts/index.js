@@ -1,25 +1,33 @@
 import TweenMax, { TimelineMax } from "gsap/TweenMax";
+import * as d3 from "d3";
+import flubber from "flubber";
 import '../styles/index.scss';
 
 // Recup la liste des jobs
 const jobs = document.querySelectorAll('.job');
-const intro = document.querySelector('.intro');
-const introH2Inner = document.querySelector('.intro h2').innerHTML;
+
+// Recomposition du titre
 const introH2 = document.querySelector('.intro h2');
+const introH2Inner = document.querySelector('.intro h2').innerHTML;
+
 let animatedH2;
-
-
 let introH2Array = [];
 let animeLetters;
 
+function init() {
+  decompo();
+  recompo();
+
+  jobs.forEach(addTweenJob);
+  animatedH2.children.forEach(addTweenIntro);
+}
+init();
 
 function decompo() {
   for(let i = 0; i < introH2Inner.length; i++) {
     introH2Array.push(introH2Inner.substr(i, 1));
   }
 }
-
-
 function recompo() {
   // creer container qui contient les div créer plus bas
   animeLetters = document.createElement("h2");
@@ -44,15 +52,14 @@ function recompo() {
   //console.log(animatedH2);
 }
 
-
 function addTweenJob(job) {
   let tl = new TimelineMax();
   tl.set(job, { opacity: 0 });
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {
-        tl.to(job, .1, { x: '-20px', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut });
-        tl.to(job, .3, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
+        tl.to(job, .25, { x: '-20px', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut });
+        tl.to(job, .4, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
         //observer.disconnect();
       } else if (entry.intersectionRatio < .5) {
         tl.to(job, .3, { x: '20px', scale: 1, opacity: 1, skewX: '-1', skewY: '0', ease: Power1.easeOut });
@@ -69,12 +76,12 @@ function addTweenIntro(el, index) {
   console.log(el, index);
   let tl = new TimelineMax();
   tl.set(el, { opacity: 0 });
-  let delay = index < 1 ? 0 : (index / 15) - (index / 13.5);
+  let delay = index < 1 ? 0 : (index / 15) - (index / 19);
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {
-        tl.to(el, .3, { x: '-500px', y: '-100px', scale: 1, rotation: 20, opacity: 0, skewX: '1', skewY: '0', ease: Power1.easeOut, delay: delay });
-        tl.to(el, .4, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut, delay: delay });
+        tl.to(el, .2, { x: '0', y: '-20px', scale: 1, rotation: -6, opacity: 0, skewX: '5', skewY: '0', ease: Power1.easeOut, delay: delay });
+        tl.to(el, .8, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut, delay: delay });
         observer.disconnect();
       } 
     });
@@ -93,11 +100,3 @@ function addTweenIntro(el, index) {
       // });
 }
       
-function init() {
-  decompo();
-  recompo();
-
-  jobs.forEach(addTweenJob);
-  animatedH2.children.forEach(addTweenIntro);
-}
-init();
