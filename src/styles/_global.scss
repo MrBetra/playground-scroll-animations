@@ -2,12 +2,6 @@
 @import 'fonts';
 
 
-.dev-borders {
-  * {
-    border        : 1px solid black;
-  }
-}
-
 * {
   padding         : 0;
   margin          : 0;
@@ -18,7 +12,12 @@
 body {
   color           : $white;
   font-family     : $font_primary;
-  background      : $black;
+  background      : darken($primary, 25%);
+  scroll-behavior: smooth;
+}
+
+main {
+  overflow-x: hidden;
 }
 
 section {
@@ -30,7 +29,7 @@ section {
 }
 
 h2 {
-  font-size     : 2.5rem;
+  font-size     : 2rem;
   margin-bottom : 1.5rem; 
 }
 
@@ -40,82 +39,66 @@ p {
 }
 
 img {
-  display        : block;
+  // display        : block;
+  vertical-align: middle;
 }
 
 .btn {
   display: inline-block;
   padding: 20px 30px;
   color: $white;
-  font-size: .8rem;
+  font-size: .7rem;
   font-family: $font_secondary;
   font-weight: $bold;
   text-decoration: none;
   text-transform: uppercase;
   //border: 2px solid $primary;
-  //border-radius: .4rem;
-  transition: background .2s ease-in-out;
+  background: $secondary;
+  border-radius: 5rem;
+  transition: all .2s ease-in-out;
 
   &:hover {
     background: $primary;
   }
 }
 
-.h_header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-
-  svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    min-width: 2000px;
-    transform: translateY(-350px);
-    fill: $primary;
-    z-index: -2;
-  }
-
-  .svg_h_top {
-    z-index: -1;
-    fill: $secondary;
-  }
-  .svg_h_bot {
-    //fill: $secondary;
-  }
+.lettre_space {
+  min-width: 11px;
 }
+
 
 .intro {
   flex-direction    : column;
 
   .animated_h2 {
-    span {
-      display: inline-block;
+    font-size: 5rem;
+
+    @media screen and (max-width: 768px) {
+      font-size: 250%;
     }
 
-    .lettre_space {
-      min-width: 11px;
+    span {
+      display: inline-block;
     }
   }
 
   &__scroll {
     position: absolute;
-    bottom: 100px;
+    bottom: 150px;
     //transform: translateX(-120px);
   }
 }
 
 .works {
-  background      : darken($primary, 25%);
+  background      : rgba($primary, .3);
   flex-direction  : column;
   justify-content: space-around;
   padding         : 8rem 3rem;
-  //overflow        : hidden;
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    padding: 3rem 2rem;
+  }
 
   * {
     z-index: 1;
@@ -125,26 +108,42 @@ img {
     display: block;
     content: '';
     position: absolute;
-    top: -50px;
-    bottom: -50px;
+    top: 0;
     left: calc(50% - 1px);
     z-index: 1;
 
-    //height: calc(100% + 50px);
-    width: 50%;
+    height: calc(100% + 100px);
+    width: 100%;
     background-color: $primary;
-    //mix-blend-mode: unset;
+    background: linear-gradient(0deg, rgba($primary, 0) 10%, rgba($primary, 1) 85%, $primary 100%);
+    border-top-left-radius: 2.5rem;
+    border-bottom-left-radius: 2.5rem;
+
+    transform: rotate(10deg);
   }
 }
 
 .job {
   @extend section;
+
   min-height        : 100%;
-  margin            : 50px;
+  margin            : 80px 0;
   opacity           : 0;
   
+  @media screen and (max-width: 768px) {
+    display: block;
+    margin: 0;
+  }
+  
   &__image {
-    margin-right  : -3rem; 
+    margin-right  : -3rem;
+    width: 100%;
+     
+    img {
+      width: 100%;
+      vertical-align: middle;
+      border-radius: 1rem;
+    }
   }
   &__content {
     z-index       : 3;
@@ -154,6 +153,18 @@ img {
 
 .exp {
   flex-direction    : column;
-  color             : $secondary; 
-  background        : $white;
+  color             : white; 
+  background        : darken($primary, 35%);
+
+  h2 {
+    font-size: 4rem;
+
+    @media screen and (max-width: 768px) {
+      font-size: 200%;
+    }
+    
+    span {
+      display: inline-block;
+    }
+  }
 }

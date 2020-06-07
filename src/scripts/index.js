@@ -1,102 +1,159 @@
 import TweenMax, { TimelineMax } from "gsap/TweenMax";
-import * as d3 from "d3";
-import flubber from "flubber";
 import '../styles/index.scss';
 
-// Recup la liste des jobs
 const jobs = document.querySelectorAll('.job');
+let title = document.querySelector('.animated_h2');
+let footer = document.querySelector('.exp__title');
 
-// Recomposition du titre
-const introH2 = document.querySelector('.intro h2');
-const introH2Inner = document.querySelector('.intro h2').innerHTML;
 
-let animatedH2;
-let introH2Array = [];
-let animeLetters;
+
 
 function init() {
-  decompo();
-  recompo();
+
+  let splitIntroTitle = split(title).children;
+  let splitFooterTitle = split(footer).children;
 
   jobs.forEach(addTweenJob);
-  animatedH2.children.forEach(addTweenIntro);
+  splitIntroTitle.forEach(addTweenIntro);
+  splitFooterTitle.forEach(addTweenExp);
+  
 }
 init();
 
-function decompo() {
-  for(let i = 0; i < introH2Inner.length; i++) {
-    introH2Array.push(introH2Inner.substr(i, 1));
-  }
-}
-function recompo() {
-  // creer container qui contient les div créer plus bas
-  animeLetters = document.createElement("h2");
-  animeLetters.className = "animated_h2";
-  introH2Array.forEach( char => {
-    //créer un div et mettre le char dedans :
-    //console.log(char);
-    let span = document.createElement("span");
-    let lettre = document.createTextNode(char);
-    char ===  " " ? span.className = "lettre_space" : char;
-    // Met la lettre dans le div 
-    span.appendChild(lettre);
-    // Ajouter la lettre au container
-    animeLetters.appendChild(span);
+//
+//
+// Décompose l'element en span individuel et return le nouvel element dom
+//
+//
+
+function split(element) {
+
+  const elements = [];
+  const dom = cloneElement(element.tagName, element.className);
+
+  element.innerHTML.split("").forEach(character => {
+    const span = document.createElement("span");
+    span.textContent = character;
+    if (character == " ") span.className = "lettre_space";
+    elements.push(span);
+    dom.appendChild(span);
   });
 
-  // Remplace le h2 original par le nouveau décomposer 
-  let parentIntro = introH2.parentNode;
-  parentIntro.replaceChild(animeLetters, introH2);
+  let parent = element.parentNode;
+  parent.replaceChild(dom, element);
 
-  animatedH2 = document.querySelector('.animated_h2');
-  //console.log(animatedH2);
+  return dom;
 }
+
+//
+//
+// Clone un element dom
+//
+//
+
+function cloneElement(tag, className) {
+  let newElement = document.createElement(tag);
+  newElement.className = className;
+  return newElement;
+}
+
+//
+//
+// Animation avec intersection observer
+//
+//
 
 function addTweenJob(job) {
+  console.log(job.querySelector('.job__content').children);
+
+  let image = job.querySelector('.job__image');
+  let content = job.querySelector('.job__content').children;
+
   let tl = new TimelineMax();
-  tl.set(job, { opacity: 0 });
+
+  tl.set(image, { opacity: 0 });
+  tl.set(content, { x: '-20', opacity: 0 });
+
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {
-        tl.to(job, .25, { x: '-20px', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut });
-        tl.to(job, .4, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
-        //observer.disconnect();
-      } else if (entry.intersectionRatio < .5) {
-        tl.to(job, .3, { x: '20px', scale: 1, opacity: 1, skewX: '-1', skewY: '0', ease: Power1.easeOut });
-        tl.to(job, .4, { x: '0', scale: 1, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeInOut });
-        //tl.to(job, .3, { x: '0', scale: .8, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeInOut });
+
+        tl.to(job, 0, { opacity: 1 });
+        tl.to(image, .25, { x: '-20px', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeOut });
+        tl.staggerTo(content, .25, { stagger: .2, x: '0', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut }, "-=0.25");
+        tl.to(image, .25, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
+        
+        io.disconnect();
+
+      } else if (entry.intersectionRatio < .2) {
+
+        tl.to(image, .2, { x: '-20px', scale: 1, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+        tl.to(image, 0, { x: '0', scale: 1, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeInOut });
+
+        tl.staggerTo(content, .2, { stagger: .1, x: '20px', scale: 1, opacity: 0, skewX: '-1', skewY: '0', ease: Power1.easeOut });
+        
       }
     });
-  }, { threshold: 0.5} );
+  }, { threshold: 0.2} );
+
   io.POLL_INTERVAL = 100;
-  io.observe(job);
+  io.observe(image, content);
+
 }
 
+//
+//
+// Animation titre
+//
+//
+
 function addTweenIntro(el, index) {
-  console.log(el, index);
+
+  let delay = index < 1 ? 0 : (index / 40);
+  
   let tl = new TimelineMax();
   tl.set(el, { opacity: 0 });
-  let delay = index < 1 ? 0 : (index / 15) - (index / 19);
+
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {
-        tl.to(el, .2, { x: '0', y: '-20px', scale: 1, rotation: -6, opacity: 0, skewX: '5', skewY: '0', ease: Power1.easeOut, delay: delay });
-        tl.to(el, .8, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut, delay: delay });
-        observer.disconnect();
-      } 
+
+        tl.to(el, .3, { x: '15', y: '25', scale: 1, rotation: 10, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+        tl.to(el, .6, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Quad.easeOut, delay: delay * 2 });
+      
+      } else if (entry.intersectionRatio < .5) {
+
+        tl.to(el, .3, { x: '15', y: '25', scale: 1, rotation: 10, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+      }
     });
-  }, { threshold: 0.5} );
+  }, { threshold: 0.5 } );
+
   io.POLL_INTERVAL = 100;
   io.observe(el);
+} 
+
+
+function addTweenExp(el, index) {
+
+  let delay = index < 1 ? 0 : (index / 40);
   
-  // job.addEventListener('mouseenter', ev => {
-    //     tl.to(job, .3, { x: '-60px', scale: .95, skewX: '2', skewY: '0', ease: Power1.easeInOut });
-    //     tl.to(job, .3, { x: '-20px', scale: .95, skewX: '-.5', skewY: '0', ease: Power1.easeInOut });
-    //     tl.to(job, .2, { x: '-30px', scale: .95, skewX: '0', skewY: '0', ease: Power1.easeInOut });
-    // });
-    
-    // job.addEventListener('mouseleave', ev => {
-      //     tl.to(job, .4, { x: '0', scale: 1, skewX: '0', skewY: '0', ease: Power2.easeInOut });
-      // });
-}
+  let tl = new TimelineMax();
+  tl.set(el, { opacity: 0 });
+
+  const io = new IntersectionObserver( (entries, observer) => {
+    entries.forEach( entry => {
+      if (entry.isIntersecting) {
+
+        tl.to(el, .3, { x: '-15', y: '-50', scale: 1, rotation: -30, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+        tl.to(el, .6, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Bounce.easeOut, delay: delay * 2 });
       
+      } else if (entry.intersectionRatio < .5) {
+
+        tl.to(el, .3, { x: '15', y: '25', scale: 1, rotation: 0, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+      }
+    });
+  }, { threshold: 0.5 } );
+
+  io.POLL_INTERVAL = 100;
+  io.observe(el);
+} 
