@@ -69,30 +69,23 @@ function addTweenJob(job) {
   let image = job.querySelector('.job__image');
   let content = job.querySelector('.job__content').children;
 
+  // CustomEase.create("customEase", ".12,.87,.26,1.31");
+
   let tl = new TimelineMax();
 
   tl.set(image, { opacity: 0 });
-  tl.set(content, { x: '-20', opacity: 0 });
+  tl.set(content, { x: '20', opacity: 0 });
 
   const io = new IntersectionObserver( (entries, observer) => {
     entries.forEach( entry => {
       if (entry.isIntersecting) {
 
-        tl.to(job, 0, { opacity: 1 });
-        tl.to(image, .25, { x: '-20px', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeOut });
-        tl.staggerTo(content, .25, { stagger: .2, x: '0', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Power1.easeOut }, "-=0.25");
-        tl.to(image, .25, { x: '0', scale: 1, opacity: 1, skewX: '0', skewY: '0', ease: Power1.easeInOut });
-        
-        io.disconnect();
+        tl.to(image, 0, { x: '-50px', scale: 1, opacity: 0, rotation: 5, skewX: '0', skewY: '0' });
+        tl.to(image, 2, { x: '0', scale: 1, opacity: 1, rotation: 0, skewX: '0', skewY: '0', ease: Elastic.easeOut });
+        tl.staggerTo(content, 1.2, { x: '0', scale: 1, opacity: 1, skewX: '1', skewY: '0', ease: Elastic.easeOut }, .2, "-=1.5");
+        observer.disconnect();
 
-      } else if (entry.intersectionRatio < .2) {
-
-        tl.to(image, .2, { x: '-20px', scale: 1, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
-        tl.to(image, 0, { x: '0', scale: 1, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeInOut });
-
-        tl.staggerTo(content, .2, { stagger: .1, x: '20px', scale: 1, opacity: 0, skewX: '-1', skewY: '0', ease: Power1.easeOut });
-        
-      }
+      } 
     });
   }, { threshold: 0.2} );
 
@@ -120,10 +113,7 @@ function addTweenIntro(el, index) {
 
         tl.to(el, .3, { x: '15', y: '25', scale: 1, rotation: 10, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
         tl.to(el, .6, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Quad.easeOut, delay: delay * 2 });
-      
-      } else if (entry.intersectionRatio < .5) {
-
-        tl.to(el, .3, { x: '15', y: '25', scale: 1, rotation: 10, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+        observer.disconnect();
       }
     });
   }, { threshold: 0.5 } );
@@ -146,10 +136,7 @@ function addTweenExp(el, index) {
 
         tl.to(el, .3, { x: '-15', y: '-50', scale: 1, rotation: -30, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
         tl.to(el, .6, { x: '0', y: '0', scale: 1, rotation: 0, opacity: 1, skewX: '0', skewY: '0', ease: Bounce.easeOut, delay: delay * 2 });
-      
-      } else if (entry.intersectionRatio < .5) {
-
-        tl.to(el, .3, { x: '15', y: '25', scale: 1, rotation: 0, opacity: 0, skewX: '0', skewY: '0', ease: Power1.easeOut });
+        observer.disconnect();
       }
     });
   }, { threshold: 0.5 } );
